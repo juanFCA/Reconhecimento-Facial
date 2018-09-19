@@ -8,14 +8,38 @@ faceDetect = cv2.CascadeClassifier('Dependencias/haarcascade_frontalface_default
 #Capturamos a camera
 cam = cv2.VideoCapture(0)
 
+#Definimos a função que busca a pessoa
+def capturaIdPessoa(NomePessoa):
+    #Criamos a conexão com o banco de dados
+    conn = sqlite3.connect('Dados/FaceDataBase.db')
+    #Criamos um cursor para percorrer o Banco
+    cursor = conn.cursor()
+    #Comando sql
+    cmdSeleciona = "SELECT ID FROM Pessoa WHERE NOME="+"'"+str(NomePessoa)+"'"
+    #Executamos o comando
+    cursor.execute(cmdSeleciona)
+    # Inicializamos a variável com o valor default de None que é o equivalente de NULL
+    IdPessoa = None
+    # Como o cursor é uma tupla retornando os valores temos como resultado
+    # cursor[id, nome, idade] logo para recuperar o dado nescessário fazemos um for value in variable:
+    for linha in cursor:
+        #como o id é a primeira posição na tupla(linha) temos de pegar a posição 0 do vetor
+        IdPessoa = linha[0]
+    #Fazemos o commit
+    conn.commit()
+    #Fechamos a conexão
+    conn.close()
+    #Returnamos o valor
+    return IdPessoa
+
 #Definicao da funcao de inserção/atualização do Banco de Dados
-def insereOuAtualiza(IdPessoa, NomePessoa, IdadePessoa):
+def insereOuAtualiza(NomePessoa, IdadePessoa):
     #Criamos a conexão com o banco de Dados
     conn = sqlite3.connect('Dados/FaceDataBase.db')
     #Criamos um cursor do sqlite3
     cursor = conn.cursor()
     #Comando SQL
-    cmdSeleciona = "SELECT * FROM Pessoa WHERE ID="+"'"+str(IdPessoa)+"'"
+    cmdSeleciona = "SELECT * FROM Pessoa WHERE ID="+"'"+str(capturaIdPessoa(NomePessoa))+"'"
     #Executamos o comando
     cursor.execute(cmdSeleciona)
     #Existe cadastro
@@ -24,11 +48,11 @@ def insereOuAtualiza(IdPessoa, NomePessoa, IdadePessoa):
         existeCadastro = 1
     #Então atualizamos os dados
     if (existeCadastro == 1):
-        cmdAtualiza = "UPDATE Pessoa SET NOME="+"'"+str(NomePessoa)+"'"+", IDADE="+"'"+str(IdadePessoa)+"'"+" WHERE ID="+"'"+str(IdPessoa)+"'"
+        cmdAtualiza = "UPDATE Pessoa SET NOME="+"'"+str(NomePessoa)+"'"+", IDADE="+"'"+str(IdadePessoa)+"'"+" WHERE ID="+"'"+str(capturaIdPessoa(NomePessoa))+"'"
         cursor.execute(cmdAtualiza)
     #Senão inserimos os dados no banco com o comando
     else:
-        cmdInsere = "INSERT INTO Pessoa(ID,NOME,IDADE) Values ("+"'"+str(IdPessoa)+"'"+","+"'"+str(NomePessoa)+"'"+","+"'"+str(IdadePessoa)+"'"+")"
+        cmdInsere = "INSERT INTO Pessoa(NOME,IDADE) Values ("+"'"+str(NomePessoa)+"'"+","+"'"+str(IdadePessoa)+"'"+")"
         cursor.execute(cmdInsere)
     #Fazemos o commit
     conn.commit()
@@ -36,11 +60,12 @@ def insereOuAtualiza(IdPessoa, NomePessoa, IdadePessoa):
     conn.close()
 
 #Criamos os inputes para os Dados
-IdPessoa = input('Digite o ID da Pessoa:  ')
 NomePessoa = input('Digite o Nome da Pessoa:  ')
 IdadePessoa = input('Digire a Idade da Pessoa:  ')
 #Chamamos a Função
-insereOuAtualiza(IdPessoa, NomePessoa, IdadePessoa)
+insereOuAtualiza(NomePessoa, IdadePessoa)
+#Buscamos no banco o id recebido pela pessoa cadastrada
+IdPessoa = capturaIdPessoa(NomePessoa)
 #Atributo qye conta a quantidade de imagens de amostras do usuário
 amostrasNum = 0
 

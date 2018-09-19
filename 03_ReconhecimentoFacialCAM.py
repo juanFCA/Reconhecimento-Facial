@@ -62,7 +62,7 @@ while (True):
             cv2.putText(img, 'Idade: '+str(pessoa[2]), (x,y+h+45), fontFace, fontScale, fontColor, 1)
             cv2.putText(img, str(porcentagem), (x,y-5), fontFace, fontScale, fontColor, 1)
         else:
-            cv2.putText(img,'Desconhecido', (x,y+h+20), fontFace, fontScale, fontColor, 1)
+            cv2.putText(img,'Desconhecido', (x,y+h+20), fontFace, fontScale, (255,0,0), 1)
 
     cv2.imshow('Reconhecimento Facial', img)
     #Fecha a janela quando aperta q
