@@ -4,7 +4,7 @@ import numpy as np
 import sqlite3
 
 #Lincamos o cascade de detecção de face
-faceDetect = cv2.CascadeClassifier('Dependencias/haarcascade_frontalface_default.xml')
+faceDetector = cv2.CascadeClassifier('Dependencias/haarcascade_frontalface_default.xml')
 #Capturamos a camera
 cam = cv2.VideoCapture(0)
 
@@ -57,11 +57,12 @@ def insereOuAtualiza(NomePessoa, IdadePessoa):
     #Fazemos o commit
     conn.commit()
     #Fechamos a conexão
+    cursor.close()
     conn.close()
 
 #Criamos os inputes para os Dados
 NomePessoa = input('Digite o Nome da Pessoa:  ')
-IdadePessoa = input('Digire a Idade da Pessoa:  ')
+IdadePessoa = input('Digite a Idade da Pessoa:  ')
 #Chamamos a Função
 insereOuAtualiza(NomePessoa, IdadePessoa)
 #Buscamos no banco o id recebido pela pessoa cadastrada
@@ -73,22 +74,22 @@ amostrasNum = 0
 while (True):
     ret, img = cam.read();
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    faces = faceDetect.detectMultiScale(gray, 1.3, 5)
+    faces = faceDetector.detectMultiScale(gray, 1.3, 5)
 
     for (x, y, w, h) in faces:
         amostrasNum += 1
-        cv2.imwrite('Dados/Imagens/Pessoa.'+str(IdPessoa)+'.'+str(amostrasNum)+'.jpg', gray[y:y+h,x:x+w])
         cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
+        cv2.imwrite('Dados/Imagens/Pessoa.'+str(IdPessoa)+'.'+str(amostrasNum)+'.jpg', gray[y:y+h,x:x+w])
         cv2.waitKey(100)
-    #Enquanto não pararmos o código ele continua a tirar fotos
-    cv2.imshow("Captura de Imagens", img)
-    cv2.waitKey(1)
+        #Enquanto não pararmos o código ele continua a tirar fotos
+        cv2.imshow("Captura de Imagens", img)
+
     #Se aperta a tecla
-    if cv2.waitKey(1)==ord('q'):
+    if cv2.waitKey(1) == ord('q'):
         break
-    #Se tirou 20 fotos então para
+    #Se tirou 21 (0-20) fotos então para
     elif (amostrasNum > 20):
-        break;
+        break
 
 #Liberamos a câmera
 cam.release()
