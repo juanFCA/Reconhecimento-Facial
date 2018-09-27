@@ -64,7 +64,7 @@ while (True):
         #para encontrarmos a porentagem de acerto da compinação
         porcentagem = "  {0}%".format(round(100 - confidence))
         #Se a pessoa for diferente de None
-        if(confidence <= 90):
+        if(confidence <= 60):
             cv2.putText(img, 'Nome: '+str(pessoa[1]), (x,y+h+20), fontFace, fontScale, fontColor, 1)
             cv2.putText(img, 'Idade: '+str(pessoa[2]), (x,y+h+45), fontFace, fontScale, fontColor, 1)
             cv2.putText(img, str(porcentagem), (x,y-5), fontFace, fontScale, fontColor, 1)

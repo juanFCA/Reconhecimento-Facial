@@ -2,6 +2,13 @@
 import cv2
 import numpy as np
 import sqlite3
+import os.path
+
+#Cria as pastas necessárias
+if(os.path.isdir('./Dados/Imagens')==False):
+    os.makedirs('./Dados/Imagens')
+if(os.path.isdir('./Dados/Recognizer')==False):
+    os.makedirs('./Dados/Recognizer')
 
 #Lincamos o cascade de detecção de face
 faceDetector = cv2.CascadeClassifier('Dependencias/haarcascade_frontalface_default.xml')
