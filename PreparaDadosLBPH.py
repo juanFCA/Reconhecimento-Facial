@@ -30,7 +30,7 @@ class PreparaDadosLBPH:
         (imgs, tags) = [np.array(item) for item in [imgs, tags]]
 
         self.model.train(imgs, tags)
-        self.write('Dados/Recognizer/dadosPreparadosLBPH.yml')
+        self.model.write('Dados/Recognizer/dadosPreparadosLBPH.yml')
         print ("Treinamento dos dados completados com sucesso")
         return
 

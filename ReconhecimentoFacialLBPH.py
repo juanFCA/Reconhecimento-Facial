@@ -21,7 +21,7 @@ class ReconhecimentoFacialLBPH:
                 names[key] = subdir
                 key += 1
         self.names = names
-        #self.model.read('Dados/Recognizer/dadosPreparadosLBPH.yml')
+        self.model.read('Dados/Recognizer/dadosPreparadosLBPH.yml')
 
     def mostra_video(self):
         video_capture = cv2.VideoCapture(0)

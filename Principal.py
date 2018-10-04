@@ -1,8 +1,15 @@
-from tkinter import *
+#from tkinter import *
+try:
+    # for Python2
+    from Tkinter import *   ## notice capitalized T in Tkinter 
+except ImportError:
+    # for Python3
+    from tkinter import *   ## notice lowercase 't' in tkinter here
+
 import os
 
 root = Tk(className = 'reconhecimento_facial_principal')
-root.title('Reconhecimento Facial');
+root.title('Reconhecimento Facial')
 svalue = StringVar() 
 dvalue = IntVar()
 
@@ -27,7 +34,7 @@ def reconhecimento_facial_LBPH_btn():
 def adiciona_pessoa_btn():
     Nome = svalue.get()
     Idade = dvalue.get()
-    os.system('python3 AdicionarPessoa.py %s' and '%d' %(Nome, Idade))
+    os.system('python3 AdicionarPessoa.py %s %d' %(Nome, Idade))
 
 add_btn = Button(root,text="Adicionar", command=adiciona_pessoa_btn)
 add_btn.pack()

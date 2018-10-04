@@ -7,7 +7,7 @@ import sqlite3
 #CONSTANTES UTILIZDAS NO CODIGO
 FREQ_DIVIDER = 5
 REDMEN_FACTOR = 4
-NUM_TREINAMENTO
+NUM_TREINAMENTO = 100
 
 class AdicionaPessoa:
     #Metodo quando a classe e iniciada
@@ -20,7 +20,7 @@ class AdicionaPessoa:
         self.insere_ou_atualiza(self.face_nome, self.face_idade)
         self.path = os.path.join(self.face_dir, self.face_nome)
         if not os.path.isdir(self.face_dir):
-            os.mkdir(self.face_dir):
+            os.mkdir(self.face_dir)
         if not os.path.isdir(self.path):
             os.mkdir(self.path)
         self.conta_capturas = 0
@@ -47,7 +47,7 @@ class AdicionaPessoa:
         resized_width, resized_height = (112, 92)
         if self.conta_capturas < NUM_TREINAMENTO:
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            gray_resized = cv2.resize(gray, (gray.shape[1] / REDMEN_FACTOR, gray.shape[0] / REDMEN_FACTOR))
+            gray_resized = cv2.resize(gray, (int(gray.shape[1] / REDMEN_FACTOR), int(gray.shape[0] / REDMEN_FACTOR)))
             faces = self.face_cascade.detectMultiScale(
                 gray_resized,
                 scaleFactor=1.1,
@@ -74,24 +74,24 @@ class AdicionaPessoa:
                 if self.conta_tempo % FREQ_DIVIDER == 0:
                     cv2.imwrite('%s/%s.png' % (self.path, img_no), face_resized)
                     self.conta_capturas += 1
-                    print "Imagens Capturadas: ", self.count_captures
+                    print ("Imagens Capturadas: ", self.conta_capturas)
 
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 3)
-                cv2.putText(frame, self.face_name, (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
+                cv2.putText(frame, self.face_nome, (x - 10, y - 10), cv2.FONT_HERSHEY_PLAIN, 1, (0, 255, 0))
         elif self.conta_capturas == NUM_TREINAMENTO:
-            print "Dados de treinamento capturados. Pressione 'q' para sair."
+            print ("Dados de treinamento capturados. Pressione 'q' para sair.")
             self.conta_capturas += 1
 
         return frame
 
     #Definimos a função que busca a pessoa
-    def captura_id_pessoa(self, NomePessoa):
+    def captura_id_pessoa(self, nomePessoa):
         #Criamos a conexão com o banco de dados
         conn = sqlite3.connect('Dados/FaceDataBase.db')
         #Criamos um cursor para percorrer o Banco
         cursor = conn.cursor()
         #Comando sql
-        cmdSeleciona = "SELECT ID FROM Pessoa WHERE NOME="+"'"+str(NomePessoa)+"'"
+        cmdSeleciona = "SELECT ID FROM Pessoa WHERE NOME="+"'"+str(nomePessoa)+"'"
         #Executamos o comando
         cursor.execute(cmdSeleciona)
         # Inicializamos a variável com o valor default de None que é o equivalente de NULL
@@ -109,13 +109,13 @@ class AdicionaPessoa:
         return IdPessoa
 
     #Definicao da funcao de inserção/atualização do Banco de Dados
-    def insere_ou_atualiza(self, NomePessoa, IdadePessoa):
+    def insere_ou_atualiza(self, nomePessoa, IdadePessoa):
         #Criamos a conexão com o banco de Dados
         conn = sqlite3.connect('Dados/FaceDataBase.db')
         #Criamos um cursor do sqlite3
         cursor = conn.cursor()
         #Comando SQL
-        cmdSeleciona = "SELECT * FROM Pessoa WHERE ID="+"'"+str(capturaIdPessoa(NomePessoa))+"'"
+        cmdSeleciona = "SELECT * FROM Pessoa WHERE ID="+"'"+str(self.captura_id_pessoa(nomePessoa))+"'"
         #Executamos o comando
         cursor.execute(cmdSeleciona)
         #Existe cadastro
@@ -124,11 +124,11 @@ class AdicionaPessoa:
             existeCadastro = 1
         #Então atualizamos os dados
         if (existeCadastro == 1):
-            cmdAtualiza = "UPDATE Pessoa SET NOME="+"'"+str(NomePessoa)+"'"+", IDADE="+"'"+str(IdadePessoa)+"'"+" WHERE ID="+"'"+str(capturaIdPessoa(NomePessoa))+"'"
+            cmdAtualiza = "UPDATE Pessoa SET NOME="+"'"+str(nomePessoa)+"'"+", IDADE="+"'"+str(IdadePessoa)+"'"+" WHERE ID="+"'"+str(self.captura_id_pessoa(nomePessoa))+"'"
             cursor.execute(cmdAtualiza)
         #Senão inserimos os dados no banco com o comando
         else:
-            cmdInsere = "INSERT INTO Pessoa(NOME,IDADE) Values ("+"'"+str(NomePessoa)+"'"+","+"'"+str(IdadePessoa)+"'"+")"
+            cmdInsere = "INSERT INTO Pessoa(NOME,IDADE) Values ("+"'"+str(nomePessoa)+"'"+","+"'"+str(IdadePessoa)+"'"+")"
             cursor.execute(cmdInsere)
         #Fazemos o commit
         conn.commit()
