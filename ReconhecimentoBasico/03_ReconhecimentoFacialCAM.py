@@ -5,9 +5,9 @@ import sqlite3
 #Criamos um recognizer que lê arquivos salvos
 recognizer = cv2.face.LBPHFaceRecognizer_create();
 #Carregamos o arquivo com os dados preparados
-recognizer.read('Dados/Recognizer/dadosPreparados.yml')
+recognizer.read('../Dados/Recognizer/dadosPreparados.yml')
 
-faceDetector = cv2.CascadeClassifier('Dependencias/haarcascade_frontalface_default.xml')
+faceDetector = cv2.CascadeClassifier('../Dependencias/haarcascade_frontalface_default.xml')
 #Capturamos a camera
 cam = cv2.VideoCapture(0)
 cam.set(3, 800) # Set largura
@@ -25,7 +25,7 @@ fontColor = (255, 255, 255)
 #Função que recupera dados no banco de acordo com o # IDEA:
 def getPessoa(IdPessoa):
     #Conectamos com o banco
-    conn = sqlite3.connect('Dados/FaceDataBase.db')
+    conn = sqlite3.connect('../Dados/FaceDataBase.db')
     #Instanciamos um cursor
     cursor = conn.cursor()
     #Comando para buscar a pessoa

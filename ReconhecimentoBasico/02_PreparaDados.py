@@ -4,9 +4,9 @@ import numpy as np
 from PIL import Image
 
 recognizer = cv2.face.LBPHFaceRecognizer_create()
-faceDetector = cv2.CascadeClassifier("Dependencias/haarcascade_frontalface_default.xml")
+faceDetector = cv2.CascadeClassifier("../Dependencias/haarcascade_frontalface_default.xml")
 #Local onde as imagens foram salvas
-path = 'Dados/Imagens'
+path = '../Dados/Imagens'
 
 def getImagensComId(path):
     imagensPaths = [os.path.join(path, f) for f in os.listdir(path)]
@@ -31,7 +31,7 @@ def getImagensComId(path):
 facesAmostras, IDs = getImagensComId(path)
 recognizer.train(facesAmostras, IDs)
 #Salvamos o modelo
-recognizer.write('Dados/Recognizer/dadosPreparados.yml')
+recognizer.write('../Dados/Recognizer/dadosPreparados.yml')
 #Printamos a quantidade de faces detectadas e preparadas
 print("[ INFO:1] {0} faces Preparadas. Encerrando Programa\n".format(len(np.unique(IDs))))
 #Encerramos a utilização da tela

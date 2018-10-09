@@ -5,20 +5,20 @@ import sqlite3
 import os.path
 
 #Cria as pastas necessárias
-if(os.path.isdir('./Dados/Imagens')==False):
-    os.makedirs('./Dados/Imagens')
-if(os.path.isdir('./Dados/Recognizer')==False):
-    os.makedirs('./Dados/Recognizer')
+if(os.path.isdir('../Dados/Imagens')==False):
+    os.makedirs('../Dados/Imagens')
+if(os.path.isdir('../Dados/Recognizer')==False):
+    os.makedirs('../Dados/Recognizer')
 
 #Lincamos o cascade de detecção de face
-faceDetector = cv2.CascadeClassifier('Dependencias/haarcascade_frontalface_default.xml')
+faceDetector = cv2.CascadeClassifier('../Dependencias/haarcascade_frontalface_default.xml')
 #Capturamos a camera
 cam = cv2.VideoCapture(0)
 
 #Definimos a função que busca a pessoa
 def capturaIdPessoa(NomePessoa):
     #Criamos a conexão com o banco de dados
-    conn = sqlite3.connect('Dados/FaceDataBase.db')
+    conn = sqlite3.connect('../Dados/FaceDataBase.db')
     #Criamos um cursor para percorrer o Banco
     cursor = conn.cursor()
     #Comando sql
@@ -42,7 +42,7 @@ def capturaIdPessoa(NomePessoa):
 #Definicao da funcao de inserção/atualização do Banco de Dados
 def insereOuAtualiza(NomePessoa, IdadePessoa):
     #Criamos a conexão com o banco de Dados
-    conn = sqlite3.connect('Dados/FaceDataBase.db')
+    conn = sqlite3.connect('../Dados/FaceDataBase.db')
     #Criamos um cursor do sqlite3
     cursor = conn.cursor()
     #Comando SQL
@@ -86,7 +86,7 @@ while (True):
     for (x, y, w, h) in faces:
         amostrasNum += 1
         cv2.rectangle(img, (x,y), (x+w,y+h), (0,255,0), 2)
-        cv2.imwrite('Dados/Imagens/Pessoa.'+str(IdPessoa)+'.'+str(amostrasNum)+'.jpg', gray[y:y+h,x:x+w])
+        cv2.imwrite('../Dados/Imagens/Pessoa.'+str(IdPessoa)+'.'+str(amostrasNum)+'.jpg', gray[y:y+h,x:x+w])
         cv2.waitKey(100)
         #Enquanto não pararmos o código ele continua a tirar fotos
         cv2.imshow("Captura de Imagens", img)
