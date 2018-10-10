@@ -5,12 +5,13 @@ import os
 
 RESIZE_FACTOR = 4
 
-class ReconhecimentoFacialLBPH:
+class ReconhecimentoFacialEigen():
+
     def __init__(self):
         cascPath = "Dependencias/haarcascade_frontalface_default.xml"
         self.face_cascade = cv2.CascadeClassifier(cascPath)
         self.face_dir = 'Dados/Imagens'
-        self.model = cv2.face.LBPHFaceRecognizer_create()
+        self.model = cv2.face.EigenFaceRecognizer_create()
         self.face_names = []
 
     def carrega_dados_preparados(self):
@@ -21,7 +22,7 @@ class ReconhecimentoFacialLBPH:
                 names[key] = subdir
                 key += 1
         self.names = names
-        self.model.read('Dados/Recognizer/dadosPreparadosLBPH.yml')
+        self.model.read('Dados/Recognizer/dadosPreparadosFisher.yml')
 
     def mostra_video(self):
         video_capture = cv2.VideoCapture(0)
@@ -29,7 +30,7 @@ class ReconhecimentoFacialLBPH:
             ret, frame = video_capture.read()
             inImg = np.array(frame)
             outImg, self.face_names = self.processa_imagem(inImg)
-            cv2.imshow('Video LBPH', outImg)
+            cv2.imshow('Video Fisher', outImg)
 
             # When everything is done, release the capture on pressing 'q'
             if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -72,7 +73,7 @@ class ReconhecimentoFacialLBPH:
 
 
 if __name__ == '__main__':
-    recognizer = ReconhecimentoFacialLBPH()
+    recognizer = ReconhecimentoFacialEigen()
     recognizer.carrega_dados_preparados()
     print ("Pressine 'q' para fechar o video")
 recognizer.mostra_video()
