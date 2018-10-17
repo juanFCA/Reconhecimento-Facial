@@ -7,11 +7,17 @@
 ## Das Tecnologias
   Para realizarmos tal empreendimentos escolhemos nos utilizar da Linguagem de Programação Python em conjunto com o conjunto de bibliotecas OpenCV para visão computacional sendo ambas tecnologias Open Source.
   
-  ### Python
-    É uma linguagem de programação de alto nível do tipo interpretada, também contém nela a orientação a objetos. Para mais       informações acesse o site oficial: https://www.python.org/
+### Python
+   É uma linguagem de programação de alto nível do tipo interpretada, também contém nela a orientação a objetos. Para mais       informações acesse o link: 
+  <a href="https://www.python.org/">Python</a>
     
-  ### OpenCV
-    O OpenCV é um conjunto de bibliotecas voltadas para a visão computacional e aprendizado de máquina, criado para o avanço da pesquisa na aréa visual e gráfica. Para mais informações acesse o site oficial: https://opencv.org/
+### OpenCV
+   O OpenCV é um conjunto de bibliotecas voltadas para a visão computacional e aprendizado de máquina, criado para o avanço da pesquisa na aréa visual e gráfica. Para mais informações aacesse o link:
+   <a href="https://opencv.org/">OpenCV</a>
     
-
-
+## Dos algoritmos de reconhecimento do OpenCV
+### 1 - Local Binary Pattern Histogram (LBPH) 
+   É um dos mais fáceis dos algoritmos de reconhecimento ele se utiliza das imagens em escala de cinza lendo suas texturas e assim realiza na preparação dos dados das imagens um arquivo contendo um Histograma em números binários com um Id atrelado a ele, quando os algoritmos do OpenCv comparam a imagem devidamente preparada com o individuo diante da câmera realiza a verificação e nos retorna o Id. Para maiores informações leia sobre no site Oficial da OpenCv ou leia este <a href="https://towardsdatascience.com/face-recognition-how-lbph-works-90ec258c3d6b">Artigo de Kelvin Salton do Prado na Towards Dara Science</a>  com um texto bem explicativo.
+   
+### 2 - Eigenfaces
+   Neste algoritimo não se captura a iluminação contida na imagem.
