@@ -62,14 +62,20 @@ class ReconhecimentoFacialLBPH:
             face_resized = cv2.resize(face, (resized_width, resized_height))
             confidence = self.model.predict(face_resized)
             if confidence[1]<80:
-                pessoa = self.names[confidence[0]]
+                nome = self.names[confidence[0]]
+                pessoa = captura_pessoa(nome)
                 cv2.rectangle(frame, (x,y), (x+w, y+h), (255, 0, 0), 3)
-                cv2.putText(frame, '%s - %.0f' % (pessoa, confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,2,(0, 255, 0), 2)
+                cv2.putText(frame, '%s - %.0f' % (pessoa[1], confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,2,(0, 255, 0), 2)
 
-                cv2.imwrite('%s.png' % pessoa, face_resized)
-                thread = EmailThread(confidence[0], pessoa, "juanfcarlos.93@gmail.com", ('%s.png' % pessoa))
-                thread.start()
-                threads.append(thread)
+                # Grava a imagem reconhecida para envio
+                if pessoa[3] == 0:
+                    cv2.imwrite('Dados/Reconhecidos/%s.png' % pessoa[1], face_resized)
+                    thread = EmailThread(pessoa[0], pessoa[1], pessoa[2], ('Dados/Reconhecidos/%s.png' % pessoa[1]))
+                    thread.start()
+                    threads.append(thread)
+                    print(pessoa)
+                    insere_ou_atualiza(pessoa[1], pessoa[2], 1)
+
             else:
                 pessoa = 'Desconhecido'
                 cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 0, 255), 3)
@@ -80,6 +86,8 @@ class ReconhecimentoFacialLBPH:
 
 
 if __name__ == '__main__':
+    if not os.path.isdir("Dados/Reconhecidos"):
+        os.mkdir("Dados/Reconhecidos")
     recognizer = ReconhecimentoFacialLBPH()
     recognizer.carrega_dados_preparados()
     print ("Pressine 'q' para fechar o video")

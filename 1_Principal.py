@@ -10,40 +10,40 @@ import os
 
 root = Tk(className = 'reconhecimento_facial_principal')
 root.title('Reconhecimento Facial')
-svalue = StringVar()
-dvalue = IntVar()
+nomevalue = StringVar()
+emailvalue = StringVar()
 
 l = Label(root, text="Adicionar Nova Pessoa")
 l.config(font=("Courier", 15))
 l.pack()
 
 Label(root, text="Nome: ").pack()
-w1 = Entry(root, textvariable=svalue).pack()
+w1 = Entry(root, textvariable=nomevalue).pack()
 
-Label(root, text="Idade: ").pack()
-w2 = Entry(root, textvariable=dvalue).pack()
+Label(root, text="Email: ").pack()
+w2 = Entry(root, textvariable=emailvalue).pack()
 
 def adiciona_pessoa_btn():
-    Nome = svalue.get()
-    Idade = dvalue.get()
-    os.system('python3 2_AdicionarPessoa.py %s %d' %(Nome, Idade))
+    Nome = nomevalue.get()
+    Email = emailvalue.get()
+    os.system('python3 2_AdicionarPessoa.py %s %s' %(Nome, Email))
 
 def prepara_dados_LBPH_btn():
-    Nome = svalue.get()
+    Nome = nomevalue.get()
     os.system('python3 3_1_PreparaDadosLBPH.py %s'%Nome)
 
 def reconhecimento_facial_LBPH_btn():
     os.system('python3 3_2_ReconhecimentoFacialLBPH.py')
 
 def prepara_dados_Eigen_btn():
-    Nome = svalue.get()
+    Nome = nomevalue.get()
     os.system('python3 4_1_PreparaDadosEigen.py %s'%Nome)
 
 def reconhecimento_facial_Eigen_btn():
     os.system('python3 4_2_ReconhecimentoFacialEigen.py')
 
 def prepara_dados_Fisher_btn():
-    Nome = svalue.get()
+    Nome = nomevalue.get()
     os.system('python3 5_1_PreparaDadosFisher.py %s'%Nome)
 
 def reconhecimento_facial_Fisher_btn():

@@ -16,8 +16,8 @@ class AdicionaPessoa:
         self.face_cascade = cv2.CascadeClassifier(cascPath)
         self.face_dir = "Dados/Imagens"
         self.face_nome = sys.argv[1]
-        self.face_idade = sys.argv[2]
-        insere_ou_atualiza(self.face_nome, self.face_idade)
+        self.face_email = sys.argv[2]
+        insere_ou_atualiza(self.face_nome, self.face_email, 0)
         self.path = os.path.join(self.face_dir, self.face_nome)
         if not os.path.isdir(self.face_dir):
             os.mkdir(self.face_dir)
