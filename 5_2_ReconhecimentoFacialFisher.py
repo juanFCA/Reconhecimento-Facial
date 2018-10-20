@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import sys
 import os
+from Core.BDaccess import *
+from Core.EmailThread import *
 
 RESIZE_FACTOR = 4
 

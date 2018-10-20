@@ -1,13 +1,13 @@
-import numpy as np 
+import numpy as np
 import cv2
-import sys 
-import os 
-import sqlite3
+import sys
+import os
+from Core.BDaccess import *
 
 #CONSTANTES UTILIZDAS NO CODIGO
 FREQ_DIVIDER = 5
 REDMEN_FACTOR = 4
-NUM_TREINAMENTO = 100
+NUM_TREINAMENTO = 20
 
 class AdicionaPessoa:
     #Metodo quando a classe e iniciada
@@ -17,7 +17,7 @@ class AdicionaPessoa:
         self.face_dir = "Dados/Imagens"
         self.face_nome = sys.argv[1]
         self.face_idade = sys.argv[2]
-        self.insere_ou_atualiza(self.face_nome, self.face_idade)
+        insere_ou_atualiza(self.face_nome, self.face_idade)
         self.path = os.path.join(self.face_dir, self.face_nome)
         if not os.path.isdir(self.face_dir):
             os.mkdir(self.face_dir)
@@ -25,7 +25,7 @@ class AdicionaPessoa:
             os.mkdir(self.path)
         self.conta_capturas = 0
         self.conta_tempo = 0
-    
+
     #Função para captura e preparo das imagens
     def captura_treinamento_imagens(self):
         video_capture = cv2.VideoCapture(0)
@@ -40,7 +40,7 @@ class AdicionaPessoa:
                 video_capture.release()
                 cv2.destroyAllWindows()
                 return
-    
+
     #Função para processar imagens
     def processa_imagem(self, imgEntrada):
         frame = cv2.flip(imgEntrada, 1)
@@ -84,59 +84,7 @@ class AdicionaPessoa:
 
         return frame
 
-    #Definimos a função que busca a pessoa
-    def captura_id_pessoa(self, nomePessoa):
-        #Criamos a conexão com o banco de dados
-        conn = sqlite3.connect('Dados/FaceDataBase.db')
-        #Criamos um cursor para percorrer o Banco
-        cursor = conn.cursor()
-        #Comando sql
-        cmdSeleciona = "SELECT ID FROM Pessoa WHERE NOME="+"'"+str(nomePessoa)+"'"
-        #Executamos o comando
-        cursor.execute(cmdSeleciona)
-        # Inicializamos a variável com o valor default de None que é o equivalente de NULL
-        IdPessoa = None
-        # Como o cursor é uma tupla retornando os valores temos como resultado
-        # cursor[id, nome, idade] logo para recuperar o dado nescessário fazemos um for value in variable:
-        for linha in cursor:
-            #como o id é a primeira posição na tupla(linha) temos de pegar a posição 0 do vetor
-            IdPessoa = linha[0]
-        #Fazemos o commit
-        conn.commit()
-        #Fechamos a conexão
-        conn.close()
-        #Returnamos o valor
-        return IdPessoa
-
-    #Definicao da funcao de inserção/atualização do Banco de Dados
-    def insere_ou_atualiza(self, nomePessoa, IdadePessoa):
-        #Criamos a conexão com o banco de Dados
-        conn = sqlite3.connect('Dados/FaceDataBase.db')
-        #Criamos um cursor do sqlite3
-        cursor = conn.cursor()
-        #Comando SQL
-        cmdSeleciona = "SELECT * FROM Pessoa WHERE ID="+"'"+str(self.captura_id_pessoa(nomePessoa))+"'"
-        #Executamos o comando
-        cursor.execute(cmdSeleciona)
-        #Existe cadastro
-        existeCadastro = 0
-        for linha in cursor:
-            existeCadastro = 1
-        #Então atualizamos os dados
-        if (existeCadastro == 1):
-            cmdAtualiza = "UPDATE Pessoa SET NOME="+"'"+str(nomePessoa)+"'"+", IDADE="+"'"+str(IdadePessoa)+"'"+" WHERE ID="+"'"+str(self.captura_id_pessoa(nomePessoa))+"'"
-            cursor.execute(cmdAtualiza)
-        #Senão inserimos os dados no banco com o comando
-        else:
-            cmdInsere = "INSERT INTO Pessoa(NOME,IDADE) Values ("+"'"+str(nomePessoa)+"'"+","+"'"+str(IdadePessoa)+"'"+")"
-            cursor.execute(cmdInsere)
-        #Fazemos o commit
-        conn.commit()
-        #Fechamos a conexão
-        cursor.close()
-        conn.close()
-
 if __name__ == '__main__':
     treinar = AdicionaPessoa()
     treinar.captura_treinamento_imagens()
-print ("Digite o próximo usuário a treinar ou pressione Reconhecer")   
+print ("Digite o próximo usuário a treinar ou pressione Reconhecer")

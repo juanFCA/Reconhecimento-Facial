@@ -2,6 +2,8 @@ import numpy as np
 import cv2
 import sys
 import os
+from Core.BDaccess import *
+from Core.EmailThread import *
 
 RESIZE_FACTOR = 4
 
@@ -68,6 +70,7 @@ class ReconhecimentoFacialEigen():
                 pessoa = 'Desconhecido'
                 cv2.rectangle(frame, (x,y), (x+w, y+h), (0, 0, 255), 3)
                 cv2.putText(frame, '%s - %.0f' % (pessoa, confidence[1]), (x-10, y-10), cv2.FONT_HERSHEY_PLAIN,2,(0, 255, 0), 2)
+
             pessoas.append(pessoa)
         return (frame, pessoas)
 
