@@ -12,7 +12,8 @@ class ReconhecimentoFacialLBPH:
         cascPath = "Dependencias/haarcascade_frontalface_default.xml"
         self.face_cascade = cv2.CascadeClassifier(cascPath)
         self.face_dir = 'Dados/Imagens'
-        self.model = cv2.face.LBPHFaceRecognizer_create()
+        #self.model = cv2.face.LBPHFaceRecognizer_create()
+        self.model = cv2.face.createLBPHFaceRecognizer()
         self.face_names = []
 
     def carrega_dados_preparados(self):
@@ -23,10 +24,10 @@ class ReconhecimentoFacialLBPH:
                 names[key] = subdir
                 key += 1
         self.names = names
-        self.model.read('Dados/Recognizer/dadosPreparadosLBPH.yml')
+        self.model.load('Dados/Recognizer/dadosPreparadosLBPH.yml')
 
     def mostra_video(self):
-        video_capture = cv2.VideoCapture(0)
+        video_capture = cv2.VideoCapture(1)
         while True:
             ret, frame = video_capture.read()
             inImg = np.array(frame)

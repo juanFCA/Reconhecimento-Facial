@@ -28,6 +28,9 @@ def adiciona_pessoa_btn():
     Email = emailvalue.get()
     os.system('python3 2_AdicionarPessoa.py %s %s' %(Nome, Email))
 
+def resetar_pessoa_btn():
+    os.system('python3 6_ResetarValores.py')
+
 def prepara_dados_LBPH_btn():
     Nome = nomevalue.get()
     os.system('python3 3_1_PreparaDadosLBPH.py %s'%Nome)
@@ -51,6 +54,9 @@ def reconhecimento_facial_Fisher_btn():
 
 add_btn = Button(root, text = "Adicionar", command = adiciona_pessoa_btn)
 add_btn.pack()
+
+reset_btn = Button(root, text = "Resetar Entrada", command = resetar_pessoa_btn)
+reset_btn.pack()
 
 f=Frame(root,height=1, width=400, bg="black")
 f.pack()

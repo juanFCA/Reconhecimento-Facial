@@ -5,9 +5,9 @@ import os
 from Core.BDaccess import *
 
 #CONSTANTES UTILIZDAS NO CODIGO
-FREQ_DIVIDER = 5
+FREQ_DIVIDER = 10
 REDMEN_FACTOR = 4
-NUM_TREINAMENTO = 20
+NUM_TREINAMENTO = 50
 
 class AdicionaPessoa:
     #Metodo quando a classe e iniciada
@@ -28,7 +28,7 @@ class AdicionaPessoa:
 
     #Função para captura e preparo das imagens
     def captura_treinamento_imagens(self):
-        video_capture = cv2.VideoCapture(0)
+        video_capture = cv2.VideoCapture(1)
         while True:
             self.conta_tempo += 1
             ret, frame = video_capture.read()

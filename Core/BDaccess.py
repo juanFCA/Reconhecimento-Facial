@@ -71,7 +71,21 @@ def insere_ou_atualiza(nomePessoa, emailPessoa, presentePessoa):
         #cursor.execute(cmdAtualiza)
     #Senão inserimos os dados no banco com o comando
     else:
-        cursor.execute("INSERT INTO Pessoa(NOME,EMAIL,PRESENTE) VALUES (nomePessoa, emailPessoa, presentePessoa)")
+        cursor.execute("INSERT INTO Pessoa(NOME,EMAIL,PRESENTE) VALUES ('" + str(nomePessoa) + "' , '" + str(emailPessoa) + "' , '" + str(presentePessoa) +"' )")
+    #Fazemos o commit
+    conn.commit()
+    #Fechamos a conexão
+    cursor.close()
+    conn.close()
+
+#Definimos a função que busca ao ID
+def reseta_valor_presente():
+    #Criamos a conexão com o banco de dados
+    conn = sqlite3.connect('Dados/FaceDataBase.db')
+    #Criamos um cursor para percorrer o Banco
+    cursor = conn.cursor()
+    #Executamos o comando
+    cursor.execute("UPDATE Pessoa SET PRESENTE = 0")
     #Fazemos o commit
     conn.commit()
     #Fechamos a conexão

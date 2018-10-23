@@ -20,7 +20,7 @@ class EmailThread(threading.Thread):
         self.imagem = imagem
 
     def run(self):
-        print ("Iniciando " + self.nome)
+        print ("Iniciando o envio da Presença para " + self.nome)
         #Adiquirindo Lock para sincronizar as Threads
         threadLock.acquire()
         #chamamos a função
@@ -29,12 +29,16 @@ class EmailThread(threading.Thread):
         threadLock.release()
 
 def enviarEmail(nome, email, imagem):
+    print ("Enviando o email da Presença para " + nome)
+    
     msg = MIMEMultipart()
     # parametros da mensagem
     msg['From'] = "2jl.rfsystem@gmail.com"
     senha = "python2018"
     msg['To'] = email
     msg['Subject'] = "Você foi identificado no evento!"
+    msg.attach(MIMEText("Olá " + str(nome) + "\n\nVocê foi reconhecido com sucesso no Evento\nParabéns\n\nAtenciosamente Time 2JL", 'plain'))
+    
     # Anexa a imagem no email
     with open(imagem, 'rb') as f:
         msgImg = MIMEImage(f.read(), name= nome)
@@ -47,8 +51,10 @@ def enviarEmail(nome, email, imagem):
     # Envia a mensagem
     server.sendmail(msg['From'], msg['To'], msg.as_string())
     server.quit()
+    print ("Email enviado com sucesso para " + nome)
+
 
 for t in threads:
     t.join()
 
-print ("Finalizado Main Thread")
+print ("Inicializados os Threads")
