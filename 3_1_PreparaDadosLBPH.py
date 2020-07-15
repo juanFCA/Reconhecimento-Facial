@@ -11,8 +11,8 @@ class PreparaDadosLBPH:
         self.face_dir = 'Dados/Imagens'
         if not os.path.isdir('Dados/Recognizer'):
             os.mkdir('Dados/Recognizer')
-        #self.model = cv2.face.LBPHFaceRecognizer_create()  
-        self.model = cv2.face.createLBPHFaceRecognizer()
+        self.model = cv2.face.LBPHFaceRecognizer_create()
+        #self.model = cv2.face.createLBPHFaceRecognizer()
 
     def lbph_treina_data(self):
         imgs = []
@@ -31,7 +31,8 @@ class PreparaDadosLBPH:
         (imgs, tags) = [np.array(item) for item in [imgs, tags]]
 
         self.model.train(imgs, tags)
-        self.model.save('Dados/Recognizer/dadosPreparadosLBPH.yml')
+        #self.model.save('Dados/Recognizer/dadosPreparadosLBPH.yml')
+        self.model.write('Dados/Recognizer/dadosPreparadosLBPH.yml')
         print ("Treinamento dos dados completados com sucesso")
         return
 

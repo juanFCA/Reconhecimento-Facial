@@ -27,7 +27,7 @@ class ReconhecimentoFacialEigen():
         self.model.read('Dados/Recognizer/dadosPreparadosEigen.yml')
 
     def mostra_video(self):
-        video_capture = cv2.VideoCapture(1)
+        video_capture = cv2.VideoCapture(0)
         while True:
             ret, frame = video_capture.read()
             inImg = np.array(frame)

@@ -30,15 +30,15 @@ class EmailThread(threading.Thread):
 
 def enviarEmail(nome, email, imagem):
     print ("Enviando o email da Presença para " + nome)
-    
+
     msg = MIMEMultipart()
     # parametros da mensagem
-    msg['From'] = "2jl.rfsystem@gmail.com"
-    senha = "python2018"
+    msg['From'] = "Aqui vai seu email"
+    senha = "Aqui vai sua senha"
     msg['To'] = email
     msg['Subject'] = "Você foi identificado no evento!"
     msg.attach(MIMEText("Olá " + str(nome) + "\n\nVocê foi reconhecido com sucesso no Evento\nParabéns\n\nAtenciosamente Time 2JL", 'plain'))
-    
+
     # Anexa a imagem no email
     with open(imagem, 'rb') as f:
         msgImg = MIMEImage(f.read(), name= nome)

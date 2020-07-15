@@ -28,7 +28,7 @@ class AdicionaPessoa:
 
     #Função para captura e preparo das imagens
     def captura_treinamento_imagens(self):
-        video_capture = cv2.VideoCapture(1)
+        video_capture = cv2.VideoCapture(0)
         while True:
             self.conta_tempo += 1
             ret, frame = video_capture.read()
